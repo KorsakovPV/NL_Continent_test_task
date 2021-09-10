@@ -31,7 +31,30 @@ NL_Continent_test_task
 
 
 
+##Разворачивание проекта
+###Клонируем проект
+      git clone https://github.com/KorsakovPV/NL_Continent_test_task
+###Создаем виртуальное окружение
+      python -m venv venv
+###Активируем виртуальное окружение
+      source venv/bin/activate 
+###Устанавливаем зависимости
+      pip install -r requirements.txt 
+###Применяем миграции
+      python manage.py migrate
+###Создаем суперпользователя
+      python manage.py createsuperuser
+###Запуск Redis
+      sudo docker run -p 6379: 6379 --name some-redis -d redis
+###Запуск Celery из папки mysite/mysite
+      celery -A mysite worker -l INFO -f logfile.log
 
+[comment]: <> (sudo docker-compose exec -T -d web celery -A mysite worker -l INFO)
+###Запускаем Django Application
+      python manage.py runserver
+###Добавляем в админке сущности
+      http://127.0.0.1:8000/admin/
+###Проверяем работу метода list и retrieve
+      http://127.0.0.1:8000/page/
+Проходим по ссылке в результатах и проверяем работу метода retrieve. При каждом вызове значение counter увеличивается. 
 
-docker run -p 6379: 6379 --name some-redis -d redis
-sudo docker-compose exec -T -d web celery -A mysite worker -l INFO
