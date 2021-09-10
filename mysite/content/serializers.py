@@ -34,9 +34,9 @@ class ContentPageSerializer(serializers.ModelSerializer):
 
 class ObjToLinkField(serializers.ReadOnlyField):
 
-    def __init__(self, **kwargs):
-        kwargs['read_only'] = True
-        super().__init__(**kwargs)
+    # def __init__(self, **kwargs):
+    #     kwargs['read_only'] = True
+    #     super().__init__(**kwargs)
 
     def to_representation(self, value):
         return f"http://{self.context.get('request').get_host()}{reverse('contentpagemodel-detail', kwargs={'pk': value})}"

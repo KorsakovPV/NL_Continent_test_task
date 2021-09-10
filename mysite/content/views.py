@@ -19,7 +19,10 @@ class PageViewSet(viewsets.ModelViewSet):
             instance.text.all()
         ]:
             for content_obj in contents:
-                content_count_increment.delay(content_obj)
+                content_count_increment.delay(
+                    model_name=getattr(content_obj, '_meta').model_name,
+                    obj_id=content_obj.id
+                )
         return Response(serializer.data)
 
     def get_serializer_class(self):

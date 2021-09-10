@@ -17,7 +17,7 @@ class ContentWithCounterBaseMode(ContentBaseMode):
 
     class Meta:
         abstract = True
-        ordering = ('modified',)
+        ordering = ('created',)
 
 
 class ContentPageModel(ContentBaseMode):

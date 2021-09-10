@@ -1,0 +1,8 @@
+[2021-09-10 02:35:19,004: INFO/MainProcess] Connected to redis://localhost:6379/0
+[2021-09-10 02:35:19,014: INFO/MainProcess] mingle: searching for neighbors
+[2021-09-10 02:35:20,040: INFO/MainProcess] mingle: all alone
+[2021-09-10 02:35:20,061: WARNING/MainProcess] /home/pavel/Dev/NL_Continent_test_task/venv/lib/python3.9/site-packages/celery/fixups/django.py:203: UserWarning: Using settings.DEBUG leads to a memory
+            leak, never use this setting in production environments!
+  warnings.warn('''Using settings.DEBUG leads to a memory
+
+[2021-09-10 02:35:20,061: INFO/MainProcess] celery@pavel-N56VJ ready.
