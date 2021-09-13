@@ -4,7 +4,7 @@ from django.db import models
 from model_utils.models import TimeStampedModel
 
 
-class ContentBaseMode(TimeStampedModel):
+class BaseMode(TimeStampedModel):
     id = models.UUIDField('id', primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     title = models.CharField('Title', max_length=1000)
 
@@ -12,15 +12,7 @@ class ContentBaseMode(TimeStampedModel):
         abstract = True
 
 
-class ContentWithCounterBaseMode(ContentBaseMode):
-    counter = models.IntegerField('Counter', default=0)
-
-    class Meta:
-        abstract = True
-        ordering = ('created',)
-
-
-class ContentPageModel(ContentBaseMode):
+class ContentPageModel(BaseMode):
     pass
 
     class Meta:
@@ -28,11 +20,18 @@ class ContentPageModel(ContentBaseMode):
         verbose_name_plural = 'Content pages'
 
 
-class ContentVideoModel(ContentWithCounterBaseMode):
+class ContentBaseMode(BaseMode):
     page = models.ForeignKey(
         ContentPageModel, verbose_name='Page', on_delete=models.PROTECT,
-        related_name='video'
+        related_name='content'
     )
+    counter = models.IntegerField('Counter', default=0)
+
+    class Meta:
+        ordering = ('created',)
+
+
+class ContentVideoModel(ContentBaseMode):
     url_video = models.URLField('Video URL', blank=True)
     url_subtitles = models.URLField('Subtitles URL', blank=True)
 
@@ -41,11 +40,7 @@ class ContentVideoModel(ContentWithCounterBaseMode):
         verbose_name_plural = 'Content videos'
 
 
-class ContentAudioModel(ContentWithCounterBaseMode):
-    page = models.ForeignKey(
-        ContentPageModel, verbose_name='Page', on_delete=models.PROTECT,
-        related_name='audio'
-    )
+class ContentAudioModel(ContentBaseMode):
     bitrate = models.IntegerField('Bitrate', null=True, default=None)
 
     class Meta:
@@ -53,11 +48,7 @@ class ContentAudioModel(ContentWithCounterBaseMode):
         verbose_name_plural = 'Content audios'
 
 
-class ContentTextModel(ContentWithCounterBaseMode):
-    page = models.ForeignKey(
-        ContentPageModel, verbose_name='Page', on_delete=models.PROTECT,
-        related_name='text'
-    )
+class ContentTextModel(ContentBaseMode):
     text = models.TextField('Text')
 
     class Meta:

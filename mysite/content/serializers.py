@@ -22,10 +22,25 @@ class ContentTextModelSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ContentBaseModeSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    title = serializers.CharField()
+    page = serializers.UUIDField()
+    counter = serializers.IntegerField()
+    created = serializers.DateTimeField()
+    modified = serializers.DateTimeField()
+    # ContentVideoModel
+    url_video = serializers.URLField(source='contentvideomodel.url_video', required=False)
+    url_subtitles = serializers.URLField(source='contentvideomodel.url_subtitles', required=False)
+    # ContentAudioModel
+    bitrate = serializers.IntegerField(source='contentaudiomodel.bitrate', required=False)
+    # ContentTextModel
+    text = serializers.CharField(source='contenttextmodel.text', required=False)
+
+
+
 class ContentPageSerializer(serializers.ModelSerializer):
-    video = ContentVideoModelSerializer(many=True, read_only=True)
-    audio = ContentAudioModelSerializer(many=True, read_only=True)
-    text = ContentTextModelSerializer(many=True, read_only=True)
+    content = ContentBaseModeSerializer(many=True, read_only=True)
 
     class Meta:
         model = ContentPageModel
@@ -33,10 +48,6 @@ class ContentPageSerializer(serializers.ModelSerializer):
 
 
 class ObjToLinkField(serializers.ReadOnlyField):
-
-    # def __init__(self, **kwargs):
-    #     kwargs['read_only'] = True
-    #     super().__init__(**kwargs)
 
     def to_representation(self, value):
         return f"http://{self.context.get('request').get_host()}{reverse('contentpagemodel-detail', kwargs={'pk': value})}"
