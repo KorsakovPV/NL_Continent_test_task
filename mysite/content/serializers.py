@@ -38,7 +38,6 @@ class ContentBaseModeSerializer(serializers.Serializer):
     text = serializers.CharField(source='contenttextmodel.text', required=False)
 
 
-
 class ContentPageSerializer(serializers.ModelSerializer):
     content = ContentBaseModeSerializer(many=True, read_only=True)
 

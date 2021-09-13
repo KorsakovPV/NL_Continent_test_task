@@ -1,4 +1,5 @@
 from rest_framework import routers
+
 from content.views import PageViewSet
 
 router = routers.SimpleRouter()
