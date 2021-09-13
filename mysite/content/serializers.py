@@ -22,10 +22,24 @@ class ContentTextModelSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ObjToLinkField(serializers.ReadOnlyField):
+
+    def to_representation(self, value):
+        return f"http://{self.context.get('request').get_host()}{reverse('contentpagemodel-detail', kwargs={'pk': value})}"
+
+
+class ContentPageListSerializer(serializers.ModelSerializer):
+    link = ObjToLinkField(source='id')
+
+    class Meta:
+        model = ContentPageModel
+        fields = ('link',)
+
+
 class ContentBaseModeSerializer(serializers.Serializer):
     id = serializers.UUIDField()
     title = serializers.CharField()
-    page = serializers.UUIDField()
+    page = serializers.UUIDField(source='page.id')
     counter = serializers.IntegerField()
     created = serializers.DateTimeField()
     modified = serializers.DateTimeField()
@@ -44,17 +58,3 @@ class ContentPageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContentPageModel
         fields = '__all__'
-
-
-class ObjToLinkField(serializers.ReadOnlyField):
-
-    def to_representation(self, value):
-        return f"http://{self.context.get('request').get_host()}{reverse('contentpagemodel-detail', kwargs={'pk': value})}"
-
-
-class ContentPageListSerializer(serializers.ModelSerializer):
-    link = ObjToLinkField(source='id')
-
-    class Meta:
-        model = ContentPageModel
-        fields = ('link',)
