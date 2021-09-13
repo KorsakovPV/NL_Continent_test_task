@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.reverse import reverse
 
-from content.models import ContentPageModel, ContentVideoModel, ContentAudioModel, ContentTextModel
+from content.models import ContentPageModel, ContentVideoModel, ContentAudioModel, ContentTextModel, ContentBaseMode
 
 
 class ContentVideoModelSerializer(serializers.ModelSerializer):
@@ -36,13 +36,7 @@ class ContentPageListSerializer(serializers.ModelSerializer):
         fields = ('link',)
 
 
-class ContentBaseModeSerializer(serializers.Serializer):
-    id = serializers.UUIDField()
-    title = serializers.CharField()
-    page = serializers.UUIDField(source='page.id')
-    counter = serializers.IntegerField()
-    created = serializers.DateTimeField()
-    modified = serializers.DateTimeField()
+class ContentBaseModeSerializer(serializers.ModelSerializer):
     # ContentVideoModel
     url_video = serializers.URLField(source='contentvideomodel.url_video', required=False)
     url_subtitles = serializers.URLField(source='contentvideomodel.url_subtitles', required=False)
@@ -51,6 +45,9 @@ class ContentBaseModeSerializer(serializers.Serializer):
     # ContentTextModel
     text = serializers.CharField(source='contenttextmodel.text', required=False)
 
+    class Meta:
+        model = ContentBaseMode
+        fields = '__all__'
 
 class ContentPageSerializer(serializers.ModelSerializer):
     content = ContentBaseModeSerializer(many=True, read_only=True)
