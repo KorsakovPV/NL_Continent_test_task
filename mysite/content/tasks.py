@@ -13,7 +13,12 @@ MODEL_TYPE = {
 
 
 @app.task
-def content_count_increment(model_name, obj_id):
+def content_count_increment(model_name: str, obj_id: int) -> None:
+    """
+    :param model_name:
+    :param obj_id:
+    :return:
+    """
     obj = get_object_or_404(MODEL_TYPE.get(model_name), id=obj_id)
     if hasattr(obj, 'counter'):
         obj.counter += 1
